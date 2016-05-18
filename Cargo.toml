@@ -1,0 +1,9 @@
+[package]
+name = "ceph-safe-disk"
+version = "0.1.0"
+authors = ["Alberto Corona <ac@albertocorona.com>"]
+
+[dependencies]
+rustc-serialize = "0.3"
+getopts = "0.2"
+ansi_term = "0.7"
