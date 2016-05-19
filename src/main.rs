@@ -1,11 +1,14 @@
 extern crate getopts;
 
 use std::env;
+use std::process;
+
+pub static NAME: &'static str = "ceph-safe-disk";
 
 use getopts::Options;
 
 fn print_help(opts: Options) {
-    println!("{0}", opts.usage("Usage: ceph-safe-disk"));
+    println!("{0}", opts.usage("Usage: ceph-safe-disk [OPTION]"));
 }
 
 fn main() {
@@ -17,7 +20,8 @@ fn main() {
     let matches = match options.parse(&args[1..]) {
         Ok(m) => m,
         Err(err) => {
-            panic!(err.to_string());
+            println!("{}: {}", NAME, err.to_string());
+            process::exit(1);
         }
     };
 

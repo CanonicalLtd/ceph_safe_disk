@@ -7,3 +7,7 @@ authors = ["Alberto Corona <ac@albertocorona.com>"]
 rustc-serialize = "0.3"
 getopts = "0.2"
 ansi_term = "0.7"
+
+[lib]
+name = "ceph"
+path = "lib/lib.rs"
