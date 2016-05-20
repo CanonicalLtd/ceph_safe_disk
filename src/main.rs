@@ -1,7 +1,10 @@
 extern crate getopts;
+extern crate ceph;
 
 use std::env;
 use std::process;
+
+use ceph::pgmap::{PGMap, FromCeph};
 
 pub static NAME: &'static str = "ceph-safe-disk";
 
@@ -27,5 +30,13 @@ fn main() {
 
     if matches.opt_present("h") {
         print_help(options);
+    } else {
+        match PGMap::from_ceph("pg dump") {
+            Ok(k) => k,
+            Err(err) => {
+                print!("{}: {}", NAME, err.to_string());
+                process::exit(1);
+            }
+        };
     }
 }

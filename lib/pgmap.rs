@@ -1,6 +1,7 @@
 extern crate rustc_serialize;
 
 use error::CSDError;
+use exec::*;
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -195,10 +196,27 @@ impl <T: Decodable + Debug> FromFile<T> for T {
     }
 }
 
+pub trait FromCeph<T> {
+    fn from_ceph(cmd: &str) -> Result<T, CSDError>;
+}
+
+impl <T: Decodable + Debug> FromCeph<T> for T {
+    fn from_ceph(cmd: &str) -> Result<T, CSDError> {
+        Ok(try!(json::decode(&try!(call_ceph(cmd)))))
+    }
+}
+
 #[test]
 #[should_panic]
 fn pgmap_from_file() {
     let pgmap = PGMap::from_file("test/pg_dump.json").unwrap();
     assert_eq!(pgmap.min_last_epoch_clean.unwrap(), 1);
     assert_eq!(pgmap.osd_stats_sum, None);
+}
+
+#[test]
+#[should_panic]
+fn pgmap_from_ceph() {
+    let pgmap = PGMap::from_ceph("pg dump");
+    assert_eq!(pgmap.is_ok(), true);
 }
