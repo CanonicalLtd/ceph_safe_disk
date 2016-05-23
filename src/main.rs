@@ -4,7 +4,8 @@ extern crate ceph;
 use std::env;
 use std::process;
 
-use ceph::pgmap::{PGMap, FromCeph};
+use ceph::pgmap::PGMap;
+use ceph::from::*;
 
 pub static NAME: &'static str = "ceph-safe-disk";
 
