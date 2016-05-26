@@ -1,7 +1,5 @@
-use exec::*;
-use from::*;
-
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+// See `src/mon/PGMap.h` in ceph's source
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct PGMap {
     pub osd_stats_sum: Option<OsdStatsSum>,
     pub pg_stats_delta: Option<PgStatsDelta>,
@@ -15,11 +13,10 @@ pub struct PGMap {
     pub last_osdmap_epoch: Option<i32>,
     pub near_full_ratio: Option<f32>,
     pub osd_stats: Option<Vec<OsdStats>>,
-    pub osd_epochs: Option<OsdEpochs>,
     pub pg_stats: Option<Vec<PgStats>>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct OsdStats {
     pub snap_trim_queue_len: Option<i32>,
     pub kb: Option<i32>,
@@ -33,7 +30,7 @@ pub struct OsdStats {
     pub osd: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct PgStatsDelta {
     pub acting: Option<i32>,
     pub log_size: Option<i32>,
@@ -42,7 +39,7 @@ pub struct PgStatsDelta {
     pub up: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct StatSum {
     pub num_evict: Option<i32>,
     pub num_evict_kb: Option<i32>,
@@ -80,7 +77,7 @@ pub struct StatSum {
     pub num_objects_dirty: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct PgStatsSum {
     pub acting: Option<i32>,
     pub log_size: Option<i32>,
@@ -89,7 +86,7 @@ pub struct PgStatsSum {
     pub up: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct OsdStatsSum {
     pub snap_trim_queue_len: Option<i32>,
     pub kb: Option<i32>,
@@ -102,19 +99,19 @@ pub struct OsdStatsSum {
     pub op_queue_age_hist: Option<OpQueueAgeHist>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct OpQueueAgeHist {
     pub upper_bound: Option<i32>,
     pub histogram: Option<Vec<i32>>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct FsPerfStat {
     pub apply_latency_ms: Option<i32>,
     pub commit_latency_ms: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct PoolStats {
     pub log_size: Option<i32>,
     pub ondisk_log_size: Option<i32>,
@@ -124,7 +121,7 @@ pub struct PoolStats {
     pub stat_sum: Option<StatSum>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
+#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
 pub struct PgStats {
     pub last_scrub: Option<String>,
     pub last_clean_scrub_stamp: Option<String>,
@@ -169,14 +166,10 @@ pub struct PgStats {
     pub ondisk_log_start: Option<String>,
 }
 
-// osd_epochs in ceph source is a map (i32, epoch_t)
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq)]
-pub struct OsdEpochs {
-}
-
 #[test]
 #[should_panic]
 fn pgmap_from_file() {
+    use from::FromFile;
     let pgmap = PGMap::from_file("test/pg_dump.json").unwrap();
     assert_eq!(pgmap.min_last_epoch_clean.unwrap(), 1);
     assert_eq!(pgmap.osd_stats_sum, None);
@@ -185,6 +178,7 @@ fn pgmap_from_file() {
 #[test]
 #[should_panic]
 fn pgmap_from_ceph() {
+    use from::FromCeph;
     let pgmap = PGMap::from_ceph("pg dump");
     assert_eq!(pgmap.is_ok(), true);
 }

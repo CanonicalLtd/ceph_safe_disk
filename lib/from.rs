@@ -23,6 +23,9 @@ impl <T: Decodable + Debug> FromFile<T> for T {
     }
 }
 
+// Generic trait to create structs from ceph JSON output. Since most if not all
+// of of ceph's commands can be formatted to JSON. For example:
+// let pgmap = PGMap::from_ceph("pg dump").unwrap()
 pub trait FromCeph<T> {
     fn from_ceph(cmd: &str) -> Result<T, CSDError>;
 }
@@ -32,4 +35,3 @@ impl <T: Decodable + Debug> FromCeph<T> for T {
         Ok(try!(json::decode(&try!(call_ceph(cmd)))))
     }
 }
-
