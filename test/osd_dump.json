@@ -1,0 +1,200 @@
+{
+    "epoch": 23,
+    "fsid": "7a95da2c-1c3f-11e6-9602-1285883bf3c1",
+    "created": "2016-05-17 15:09:18.746230",
+    "modified": "2016-05-17 18:32:43.770903",
+    "flags": "sortbitwise",
+    "cluster_snapshot": "",
+    "pool_max": 0,
+    "max_osd": 4,
+    "pools": [
+        {
+            "pool": 0,
+            "pool_name": "rbd",
+            "flags": 1,
+            "flags_names": "hashpspool",
+            "type": 1,
+            "size": 3,
+            "min_size": 2,
+            "crush_ruleset": 0,
+            "object_hash": 2,
+            "pg_num": 64,
+            "pg_placement_num": 64,
+            "crash_replay_interval": 0,
+            "last_change": "1",
+            "last_force_op_resend": "0",
+            "auid": 0,
+            "snap_mode": "selfmanaged",
+            "snap_seq": 0,
+            "snap_epoch": 0,
+            "pool_snaps": [],
+            "removed_snaps": "[]",
+            "quota_max_bytes": 0,
+            "quota_max_objects": 0,
+            "tiers": [],
+            "tier_of": -1,
+            "read_tier": -1,
+            "write_tier": -1,
+            "cache_mode": "none",
+            "target_max_bytes": 0,
+            "target_max_objects": 0,
+            "cache_target_dirty_ratio_micro": 0,
+            "cache_target_dirty_high_ratio_micro": 0,
+            "cache_target_full_ratio_micro": 0,
+            "cache_min_flush_age": 0,
+            "cache_min_evict_age": 0,
+            "erasure_code_profile": "",
+            "hit_set_params": {
+                "type": "none"
+            },
+            "hit_set_period": 0,
+            "hit_set_count": 0,
+            "use_gmt_hitset": true,
+            "min_read_recency_for_promote": 0,
+            "min_write_recency_for_promote": 0,
+            "hit_set_grade_decay_rate": 0,
+            "hit_set_search_last_n": 0,
+            "grade_table": [],
+            "stripe_width": 0,
+            "expected_num_objects": 0,
+            "fast_read": false,
+            "options": {}
+        }
+    ],
+    "osds": [
+        {
+            "osd": 0,
+            "uuid": "db6ffc95-11d5-4d9d-af35-8fe1919b31a9",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 5,
+            "up_thru": 22,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "172.31.36.4:6800\/25749",
+            "cluster_addr": "172.31.36.4:6801\/25749",
+            "heartbeat_back_addr": "172.31.36.4:6802\/25749",
+            "heartbeat_front_addr": "172.31.36.4:6803\/25749",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 1,
+            "uuid": "94d9501a-59fb-4fd8-8905-23aa30de1460",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 7,
+            "up_thru": 22,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "172.31.23.64:6800\/25818",
+            "cluster_addr": "172.31.23.64:6801\/25818",
+            "heartbeat_back_addr": "172.31.23.64:6802\/25818",
+            "heartbeat_front_addr": "172.31.23.64:6803\/25818",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 2,
+            "uuid": "9ae7be70-9b51-4bdd-a98e-9bb6bb497376",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 11,
+            "up_thru": 22,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "172.31.63.66:6800\/25254",
+            "cluster_addr": "172.31.63.66:6801\/25254",
+            "heartbeat_back_addr": "172.31.63.66:6802\/25254",
+            "heartbeat_front_addr": "172.31.63.66:6803\/25254",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 3,
+            "uuid": "5807caf0-8d98-4079-b64b-b78d30e1e279",
+            "up": 0,
+            "in": 0,
+            "weight": 0.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 16,
+            "up_thru": 17,
+            "down_at": 19,
+            "lost_at": 0,
+            "public_addr": "172.31.3.211:6800\/25199",
+            "cluster_addr": "172.31.3.211:6801\/25199",
+            "heartbeat_back_addr": "172.31.3.211:6802\/25199",
+            "heartbeat_front_addr": "172.31.3.211:6803\/25199",
+            "state": [
+                "autoout",
+                "exists"
+            ]
+        }
+    ],
+    "osd_xinfo": [
+        {
+            "osd": 0,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 0
+        },
+        {
+            "osd": 1,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 0
+        },
+        {
+            "osd": 2,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 0
+        },
+        {
+            "osd": 3,
+            "down_stamp": "2016-05-17 18:27:39.742512",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 65536
+        }
+    ],
+    "pg_temp": [],
+    "primary_temp": [],
+    "blacklist": {},
+    "erasure_code_profiles": {
+        "default": {
+            "k": "2",
+            "m": "1",
+            "plugin": "jerasure",
+            "technique": "reed_sol_van"
+        }
+    }
+}
+
