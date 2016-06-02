@@ -6,6 +6,7 @@ use std::process;
 
 use ceph::pgmap::PGMap;
 use ceph::from::*;
+use ceph::exit::*;
 
 pub static NAME: &'static str = "ceph-safe-disk";
 
@@ -25,7 +26,7 @@ fn main() {
         Ok(m) => m,
         Err(err) => {
             println!("{}: {}", NAME, err.to_string());
-            process::exit(1);
+            process::exit(ExitStatus::Err as i32);
         }
     };
 
@@ -36,7 +37,7 @@ fn main() {
             Ok(k) => k,
             Err(err) => {
                 print!("{}: {}", NAME, err.to_string());
-                process::exit(1);
+                process::exit(ExitStatus::Err as i32);
             }
         };
     }
