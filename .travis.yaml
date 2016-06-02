@@ -1,5 +1,0 @@
-language: rust
-rust: stable
-script:
-        - cargo build -j2 --verbose
-        - cargo test -j2 --verbose
