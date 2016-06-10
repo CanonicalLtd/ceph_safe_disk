@@ -1,4 +1,6 @@
 # ceph-safe-disk
+[![Build Status](https://travis-ci.org/CanonicalLtd/ceph_safe_disk.svg?branch=master)](https://travis-ci.org/CanonicalLtd/ceph_safe_disk)
+
 Ceph disk safety removal tool
 
 # Building
