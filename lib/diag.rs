@@ -34,8 +34,8 @@ impl DiagMap {
             if let Some(pools) = self.osd_map.pools {
                 for stat in pg_stats.iter() {
                     for pool in pools.iter() {
-                        if (stat.up.clone().unwrap().len() as i32) >=
-                            (pool.min_size.unwrap() + 1) {
+                        if (stat.up.clone().unwrap_or(vec![]).len() as i32) >=
+                            (pool.min_size.unwrap_or(2) + 1) {
                             println!("{} Safe to remove an OSD", Colour::Green.paint("●"));
                             return Status::Safe;
                         } else {
