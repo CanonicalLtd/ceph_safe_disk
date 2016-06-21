@@ -1,4 +1,4 @@
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
+#[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct OsdMap {
     pub pool_max: Option<i32>,
     pub max_osd: Option<i32>,
@@ -13,7 +13,7 @@ pub struct OsdMap {
     pub fsid: Option<String>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
+#[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct Default {
     pub k: Option<String>,
     pub technique: Option<String>,
@@ -21,7 +21,7 @@ pub struct Default {
     pub plugin: Option<String>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
+#[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct Osds {
     pub heartbeat_back_addr: Option<String>,
     pub uuid: Option<String>,
@@ -41,7 +41,7 @@ pub struct Osds {
     pub osd: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
+#[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct OsdXinfo {
     pub laggy_probability: Option<f32>,
     pub laggy_interval: Option<i32>,
@@ -51,7 +51,7 @@ pub struct OsdXinfo {
     pub osd: Option<i32>,
 }
 
-#[derive(RustcDecodable, RustcEncodable, Debug, PartialEq, Clone)]
+#[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct Pools {
     pub cache_target_full_ratio_micro: Option<i32>,
     pub fast_read: Option<bool>,
@@ -100,9 +100,9 @@ pub struct Pools {
 
 #[test]
 #[should_panic]
-fn osdmap_from_file() {
+fn osdmap_from_jewel_file() {
     use from::FromFile;
-    let osdmap = OsdMap::from_file("test/osd_dump.json").unwrap();
+    let osdmap = OsdMap::from_file("test/osd_dump_jewel.json").unwrap();
     assert_eq!(osdmap.pool_max.unwrap(), 1);
     assert_eq!(osdmap.pool_max, None);
 }

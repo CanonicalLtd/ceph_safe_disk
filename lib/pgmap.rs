@@ -138,7 +138,7 @@ pub struct PgStats {
     pub ondisk_log_size: Option<i32>,
     pub mapping_epoch: Option<i32>,
     pub dirty_stats_invalid: Option<bool>,
-    pub state: Option<String>,
+    pub state: String,
     pub version: Option<String>,
     pub last_became_peered: Option<String>,
     pub last_undegraded: Option<String>,
@@ -168,9 +168,9 @@ pub struct PgStats {
 
 #[test]
 #[should_panic]
-fn pgmap_from_file() {
+fn pgmap_from_jewel_file() {
     use from::FromFile;
-    let pgmap = PGMap::from_file("test/pg_dump.json").unwrap();
+    let pgmap = PGMap::from_file("test/pg_dump_jewel.json").unwrap();
     assert_eq!(pgmap.min_last_epoch_clean.unwrap(), 1);
     assert_eq!(pgmap.osd_stats_sum, None);
 }
