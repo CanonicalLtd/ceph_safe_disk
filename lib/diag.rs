@@ -55,10 +55,10 @@ impl DiagMap {
 
 // JSON output in `test/` should show safe to remove
 #[test]
-fn test_quick_diag_safe() {
+fn test_quick_diag_jewel_safe() {
     let status: Status = DiagMap {
-        pg_map: PGMap::from_file("test/pg_dump.json").unwrap(),
-        osd_map: OsdMap::from_file("test/osd_dump.json").unwrap(),
+        pg_map: PGMap::from_file("test/pg_dump_jewel.json").unwrap(),
+        osd_map: OsdMap::from_file("test/osd_dump_jewel.json").unwrap(),
     }.quick_diag();
 
     assert_eq!(status, Status::Safe);
