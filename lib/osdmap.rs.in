@@ -46,7 +46,7 @@ pub struct OsdXinfo {
     pub laggy_probability: f32,
     pub laggy_interval: i32,
     pub features: u64,
-    pub old_weight: i32,
+    pub old_weight: Option<i32>,
     pub down_stamp: String,
     pub osd: i32,
 }
@@ -54,16 +54,16 @@ pub struct OsdXinfo {
 #[derive(Deserialize, Debug, PartialEq, Clone)]
 pub struct Pools {
     pub cache_target_full_ratio_micro: i32,
-    pub fast_read: bool,
+    pub fast_read: Option<bool>,
     pub stripe_width: i32,
     pub flags_names: String,
     pub tier_of: i32,
-    pub hit_set_grade_decay_rate: i32,
+    pub hit_set_grade_decay_rate: Option<i32>,
     pub pg_placement_num: i32,
-    pub use_gmt_hitset: bool,
+    pub use_gmt_hitset: Option<bool>,
     pub quota_max_bytes: i32,
     pub erasure_code_profile: String,
-    pub expected_num_objects: i32,
+    pub expected_num_objects: Option<i32>,
     // "replicated size"
     pub size: i32,
     pub snap_seq: i32,
@@ -79,7 +79,7 @@ pub struct Pools {
     pub snap_mode: String,
     pub cache_mode: String,
     pub min_size: i32,
-    pub cache_target_dirty_high_ratio_micro: i32,
+    pub cache_target_dirty_high_ratio_micro: Option<i32>,
     pub crash_replay_interval: i32,
     pub object_hash: i32,
     pub write_tier: i32,
@@ -92,9 +92,9 @@ pub struct Pools {
     pub flags: i32,
     pub target_max_bytes: i32,
     pub snap_epoch: i32,
-    pub hit_set_search_last_n: i32,
+    pub hit_set_search_last_n: Option<i32>,
     pub last_change: String,
-    pub min_write_recency_for_promote: i32,
+    pub min_write_recency_for_promote: Option<i32>,
     pub read_tier: i32,
 }
 
@@ -131,6 +131,21 @@ mod tests {
         let osdmap = OsdMap::from_file("test/jewel/osd_dump_no_osd.json").unwrap();
         // Default for ceph is min_size + 1 for replicated size
         assert_eq!(osdmap.pools.first().unwrap().size, 3);
+    }
+
+    // Firefly tests
+    #[test]
+    fn osdmap_from_firefly_file() {
+        let osdmap = OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap();
+        assert_eq!(osdmap.pools.first().unwrap().min_size, 2);
+    }
+
+    #[test]
+    #[should_panic]
+    fn osdmap_from_firefly_file_panic() {
+        let osdmap = OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap();
+        // If this is safe to remove then osd's len should be min_size + 1
+        assert_eq!(osdmap.osds.len() as i32, 0);
     }
 
     #[test]
