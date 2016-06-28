@@ -7,5 +7,6 @@ pub mod osdmap;
 pub mod from;
 pub mod diag;
 pub mod exit;
+mod des;
 mod exec;
 mod error;
