@@ -3,7 +3,7 @@
 pub struct PGMap {
     pub osd_stats_sum: OsdStatsSum,
     pub pg_stats_delta: PgStatsDelta,
-    pub min_last_epoch_clean: i32,
+    pub min_last_epoch_clean: Option<i32>,
     pub stamp: String,
     pub pg_stats_sum: PgStatsSum,
     pub last_pg_scan: i32,
@@ -32,22 +32,22 @@ pub struct OsdStats {
 
 #[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct PgStatsDelta {
-    pub acting: i32,
+    pub acting: Option<i32>,
     pub log_size: i32,
     pub ondisk_log_size: i32,
     pub stat_sum: StatSum,
-    pub up: i32,
+    pub up: Option<i32>,
 }
 
 #[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct StatSum {
-    pub num_evict: i32,
-    pub num_evict_kb: i32,
-    pub num_bytes_hit_set_archive: i32,
-    pub num_whiteouts: i32,
-    pub num_objects_pinned: i32,
+    pub num_evict: Option<i32>,
+    pub num_evict_kb: Option<i32>,
+    pub num_bytes_hit_set_archive: Option<i32>,
+    pub num_whiteouts: Option<i32>,
+    pub num_objects_pinned: Option<i32>,
     pub num_scrub_errors: i32,
-    pub num_evict_mode_full: i32,
+    pub num_evict_mode_full: Option<i32>,
     pub num_read: i32,
     pub num_objects_recovered: i32,
     pub num_objects_omap: i32,
@@ -58,20 +58,20 @@ pub struct StatSum {
     pub num_deep_scrub_errors: i32,
     pub num_shallow_scrub_errors: i32,
     pub num_read_kb: i32,
-    pub num_objects_missing: i32,
-    pub num_flush_kb: i32,
-    pub num_flush_mode_high: i32,
+    pub num_objects_missing: Option<i32>,
+    pub num_flush_kb: Option<i32>,
+    pub num_flush_mode_high: Option<i32>,
     pub num_write_kb: i32,
-    pub num_evict_mode_some: i32,
+    pub num_evict_mode_some: Option<i32>,
     pub num_objects_degraded: i32,
-    pub num_flush: i32,
-    pub num_objects_misplaced: i32,
+    pub num_flush: Option<i32>,
+    pub num_objects_misplaced: Option<i32>,
     pub num_bytes_recovered: i32,
     pub num_objects_hit_set_archive: i32,
     pub num_keys_recovered: i32,
-    pub num_flush_mode_low: i32,
+    pub num_flush_mode_low: Option<i32>,
     pub num_objects_unfound: i32,
-    pub num_promote: i32,
+    pub num_promote: Option<i32>,
     pub num_object_copies: i32,
     pub num_bytes: i32,
     pub num_objects_dirty: i32,
@@ -79,11 +79,11 @@ pub struct StatSum {
 
 #[derive(RustcDecodable, Debug, PartialEq, Clone)]
 pub struct PgStatsSum {
-    pub acting: i32,
+    pub acting: Option<i32>,
     pub log_size: i32,
     pub ondisk_log_size: i32,
     pub stat_sum: StatSum,
-    pub up: i32,
+    pub up: Option<i32>,
 }
 
 #[derive(RustcDecodable, Debug, PartialEq, Clone)]
@@ -115,8 +115,8 @@ pub struct FsPerfStat {
 pub struct PoolStats {
     pub log_size: i32,
     pub ondisk_log_size: i32,
-    pub up: i32,
-    pub acting: i32,
+    pub up: Option<i32>,
+    pub acting: Option<i32>,
     pub poolid: i32,
     pub stat_sum: StatSum,
 }
@@ -127,11 +127,11 @@ pub struct PgStats {
     pub last_clean_scrub_stamp: String,
     pub parent_split_bits: i32,
     pub last_active: String,
-    pub pin_stats_invalid: bool,
+    pub pin_stats_invalid: Option<bool>,
     pub reported_epoch: String,
     pub log_start: String,
     pub log_size: i32,
-    pub hitset_stats_invalid: bool,
+    pub hitset_stats_invalid: Option<bool>,
     pub stats_invalid: bool,
     pub acting_primary: i32,
     pub reported_seq: String,
@@ -171,11 +171,12 @@ mod tests {
     use super::*;
     use from::FromFile;
 
+    // Jewel tests
     #[test]
     #[should_panic]
     fn pgmap_from_jewel_file_panic() {
         let pgmap = PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap();
-        assert_eq!(pgmap.min_last_epoch_clean, 1);
+        assert_eq!(pgmap.min_last_epoch_clean.unwrap(), 1);
     }
 
     #[test]
@@ -198,6 +199,20 @@ mod tests {
         let pgmap = PGMap::from_file("test/jewel/pg_dump_no_osd.json").unwrap();
         // First pg_stat.up should be length 0
         assert_eq!(pgmap.pg_stats.first().unwrap().up.len() as i32, 0);
+    }
+
+    // Firefly tests
+    #[test]
+    fn pgmap_from_firefly_file() {
+        let pgmap = PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap();
+        assert_eq!(pgmap.pg_stats.first().unwrap().up.len() as i32, 3);
+    }
+
+    #[test]
+    #[should_panic]
+    fn pgmap_from_firefly_file_panic() {
+        let pgmap = PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap();
+        assert_eq!(pgmap.pg_stats.first().unwrap().acting.len() as i32, 0);
     }
 
     #[test]
