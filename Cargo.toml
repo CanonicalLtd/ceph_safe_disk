@@ -2,11 +2,16 @@
 name = "ceph-safe-disk"
 version = "0.1.0"
 authors = ["Alberto Corona <ac@albertocorona.com>"]
+build = "build/build.rs"
+
+[build-dependencies]
+serde_codegen = "*"
 
 [dependencies]
-rustc-serialize = "0.3"
 getopts = "0.2"
 ansi_term = "0.7"
+serde = "0.7"
+serde_json = "*"
 
 [lib]
 name = "ceph"

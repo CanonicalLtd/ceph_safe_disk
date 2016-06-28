@@ -1,15 +1,15 @@
-extern crate rustc_serialize;
+extern crate serde_json;
 
 use std::fmt;
 use std::io;
 use std::string;
 
-use rustc_serialize::json;
+use serde_json::error;
 
 #[derive(Debug)]
 pub enum CSDError {
     Io(io::Error),
-    JsonDecode(json::DecoderError),
+    JsonDecode(error::Error),
     Utf8Error(string::FromUtf8Error),
     CephExecError(String),
 }
@@ -31,8 +31,8 @@ impl From<io::Error> for CSDError {
     }
 }
 
-impl From<json::DecoderError> for CSDError {
-    fn from(err: json::DecoderError) -> CSDError {
+impl From<error::Error> for CSDError {
+    fn from(err: error::Error) -> CSDError {
         CSDError::JsonDecode(err)
     }
 }
