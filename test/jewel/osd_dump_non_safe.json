@@ -1,0 +1,682 @@
+{
+    "epoch": 22,
+    "fsid": "d442d7a2-3d5d-11e6-814a-0e67f92f427f",
+    "created": "2016-06-28 18:27:26.779514",
+    "modified": "2016-06-28 19:07:50.019575",
+    "flags": "sortbitwise",
+    "cluster_snapshot": "",
+    "pool_max": 0,
+    "max_osd": 3,
+    "pools": [
+        {
+            "pool": 0,
+            "pool_name": "rbd",
+            "flags": 1,
+            "flags_names": "hashpspool",
+            "type": 1,
+            "size": 3,
+            "min_size": 2,
+            "crush_ruleset": 0,
+            "object_hash": 2,
+            "pg_num": 64,
+            "pg_placement_num": 64,
+            "crash_replay_interval": 0,
+            "last_change": "1",
+            "last_force_op_resend": "0",
+            "auid": 0,
+            "snap_mode": "selfmanaged",
+            "snap_seq": 0,
+            "snap_epoch": 0,
+            "pool_snaps": [],
+            "removed_snaps": "[]",
+            "quota_max_bytes": 0,
+            "quota_max_objects": 0,
+            "tiers": [],
+            "tier_of": -1,
+            "read_tier": -1,
+            "write_tier": -1,
+            "cache_mode": "none",
+            "target_max_bytes": 0,
+            "target_max_objects": 0,
+            "cache_target_dirty_ratio_micro": 0,
+            "cache_target_dirty_high_ratio_micro": 0,
+            "cache_target_full_ratio_micro": 0,
+            "cache_min_flush_age": 0,
+            "cache_min_evict_age": 0,
+            "erasure_code_profile": "",
+            "hit_set_params": {
+                "type": "none"
+            },
+            "hit_set_period": 0,
+            "hit_set_count": 0,
+            "use_gmt_hitset": true,
+            "min_read_recency_for_promote": 0,
+            "min_write_recency_for_promote": 0,
+            "hit_set_grade_decay_rate": 0,
+            "hit_set_search_last_n": 0,
+            "grade_table": [],
+            "stripe_width": 0,
+            "expected_num_objects": 0,
+            "fast_read": false,
+            "options": {}
+        }
+    ],
+    "osds": [
+        {
+            "osd": 0,
+            "uuid": "f84babfc-c6e3-40d8-ab54-5a3e22d396bc",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 4,
+            "up_thru": 20,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "172.31.24.133:6800\/17242",
+            "cluster_addr": "172.31.24.133:6801\/17242",
+            "heartbeat_back_addr": "172.31.24.133:6802\/17242",
+            "heartbeat_front_addr": "172.31.24.133:6803\/17242",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 1,
+            "uuid": "302e8903-82aa-4196-b12c-07420ae3af46",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 7,
+            "up_thru": 20,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "172.31.54.166:6800\/17177",
+            "cluster_addr": "172.31.54.166:6801\/17177",
+            "heartbeat_back_addr": "172.31.54.166:6802\/17177",
+            "heartbeat_front_addr": "172.31.54.166:6803\/17177",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 2,
+            "uuid": "5cabd319-a410-4340-8c0f-16630c04a8c8",
+            "up": 0,
+            "in": 0,
+            "weight": 0.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 12,
+            "last_clean_end": 14,
+            "up_from": 17,
+            "up_thru": 18,
+            "down_at": 20,
+            "lost_at": 0,
+            "public_addr": "172.31.40.220:6800\/18709",
+            "cluster_addr": "172.31.40.220:6801\/18709",
+            "heartbeat_back_addr": "172.31.40.220:6802\/18709",
+            "heartbeat_front_addr": "172.31.40.220:6803\/18709",
+            "state": [
+                "autoout",
+                "exists"
+            ]
+        }
+    ],
+    "osd_xinfo": [
+        {
+            "osd": 0,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 0
+        },
+        {
+            "osd": 1,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 0
+        },
+        {
+            "osd": 2,
+            "down_stamp": "2016-06-28 19:02:49.020964",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 576460752032874495,
+            "old_weight": 65536
+        }
+    ],
+    "pg_temp": [
+        {
+            "pgid": "0.0",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.1",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.2",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.3",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.4",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.5",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.6",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.7",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.8",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.9",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.a",
+            "osds": [
+                2,
+                1,
+                0
+            ]
+        },
+        {
+            "pgid": "0.b",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.c",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.d",
+            "osds": [
+                2,
+                1,
+                0
+            ]
+        },
+        {
+            "pgid": "0.e",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.f",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.10",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.11",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.12",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.13",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.14",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.15",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.16",
+            "osds": [
+                2,
+                1,
+                0
+            ]
+        },
+        {
+            "pgid": "0.17",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.18",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.19",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.1a",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.1b",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.1c",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.1d",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.1e",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.1f",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.20",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.21",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.22",
+            "osds": [
+                2,
+                1,
+                0
+            ]
+        },
+        {
+            "pgid": "0.23",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.24",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.25",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.26",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.27",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.28",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.29",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.2a",
+            "osds": [
+                2,
+                1,
+                0
+            ]
+        },
+        {
+            "pgid": "0.2b",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.2c",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.2d",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.2e",
+            "osds": [
+                0,
+                1,
+                2
+            ]
+        },
+        {
+            "pgid": "0.2f",
+            "osds": [
+                2,
+                1,
+                0
+            ]
+        },
+        {
+            "pgid": "0.30",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.31",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.32",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.33",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.34",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.35",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.36",
+            "osds": [
+                1,
+                2,
+                0
+            ]
+        },
+        {
+            "pgid": "0.37",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.38",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.39",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.3a",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.3b",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.3c",
+            "osds": [
+                1,
+                0,
+                2
+            ]
+        },
+        {
+            "pgid": "0.3d",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        },
+        {
+            "pgid": "0.3e",
+            "osds": [
+                2,
+                0,
+                1
+            ]
+        },
+        {
+            "pgid": "0.3f",
+            "osds": [
+                0,
+                2,
+                1
+            ]
+        }
+    ],
+    "primary_temp": [],
+    "blacklist": {},
+    "erasure_code_profiles": {
+        "default": {
+            "k": "2",
+            "m": "1",
+            "plugin": "jerasure",
+            "technique": "reed_sol_van"
+        }
+    }
+}
