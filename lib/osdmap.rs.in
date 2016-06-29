@@ -103,12 +103,13 @@ mod tests {
     use super::*;
     use from::FromFile;
 
+    // Jewel tests
     #[test]
     #[should_panic]
     fn osdmap_from_jewel_file_panic() {
         let osdmap = OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap();
         // If this is safe to remove then osd's len should be min_size + 1
-        assert_eq!(osdmap.osds.len() as i32, 0);
+        assert_eq!(osdmap.osds.len(), 0);
     }
 
     #[test]
@@ -123,14 +124,29 @@ mod tests {
     fn osdmap_from_jewel_file_no_osd_panic() {
         let osdmap = OsdMap::from_file("test/jewel/osd_dump_no_osd.json").unwrap();
         // This has no osds so len should be 0
-        assert_eq!(osdmap.osds.len() as i32, 3);
+        assert_eq!(osdmap.osds.len(), 3);
     }
 
     #[test]
     fn osdmap_from_jewel_file_no_osd() {
         let osdmap = OsdMap::from_file("test/jewel/osd_dump_no_osd.json").unwrap();
-        // Default for ceph is min_size + 1 for replicated size
-        assert_eq!(osdmap.pools.first().unwrap().size, 3);
+        let mut osds_up: Vec<i32> = Vec::new();
+        // There should be no OSDs present
+        for osd in osdmap.osds {
+            if osd.up == 1 { osds_up.push(1); }
+        }
+        assert_eq!(osds_up.len(), 0);
+    }
+
+    #[test]
+    fn osdmap_from_jewel_file_non_safe() {
+        let osdmap = OsdMap::from_file("test/jewel/osd_dump_non_safe.json").unwrap();
+        let mut osds_up: Vec<i32> = Vec::new();
+        // Since this is non-safe there should be min_size or less OSDs present
+        for osd in osdmap.osds {
+            if osd.up == 1 { osds_up.push(1); }
+        }
+        assert_eq!(osds_up.len() as i32, osdmap.pools.first().unwrap().min_size);
     }
 
     // Firefly tests

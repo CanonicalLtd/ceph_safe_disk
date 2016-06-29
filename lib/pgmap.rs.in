@@ -179,7 +179,8 @@ mod tests {
     #[should_panic]
     fn pgmap_from_jewel_file_panic() {
         let pgmap = PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap();
-        assert_eq!(pgmap.min_last_epoch_clean.unwrap(), 1);
+        // An OSD is safe to remove so up should not be 0
+        assert_eq!(pgmap.pg_stats.first().unwrap().up.len(), 0);
     }
 
     #[test]
@@ -202,6 +203,21 @@ mod tests {
         let pgmap = PGMap::from_file("test/jewel/pg_dump_no_osd.json").unwrap();
         // First pg_stat.up should be length 0
         assert_eq!(pgmap.pg_stats.first().unwrap().up.len() as i32, 0);
+    }
+
+    #[test]
+    fn pgmap_from_jewel_file_non_safe() {
+        let pgmap = PGMap::from_file("test/jewel/pg_dump_non_safe.json").unwrap();
+        // Up should be 2 as to not meet min_size + 1, as such acting should be 2
+        assert_eq!(pgmap.pg_stats.first().unwrap().up.len() as i32, 2);
+        assert_eq!(pgmap.pg_stats.first().unwrap().acting.len() as i32, 2);
+    }
+
+    #[test]
+    #[should_panic]
+    fn pgmap_from_jewel_file_non_safe_panic() {
+        let pgmap = PGMap::from_file("test/jewel/pg_dump_non_safe.json").unwrap();
+        assert_eq!(pgmap.pg_stats.first().unwrap().up.len() as i32, 3);
     }
 
     // Firefly tests
