@@ -12,6 +12,7 @@ getopts = "0.2"
 ansi_term = "0.7"
 serde = "0.7"
 serde_json = "0.7"
+users = "0.5"
 
 [lib]
 name = "ceph"

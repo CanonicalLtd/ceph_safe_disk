@@ -6,6 +6,7 @@ use std::process;
 
 use ceph::exit::*;
 use ceph::diag::*;
+use ceph::exec::check_user;
 
 pub static NAME: &'static str = "ceph-safe-disk";
 
@@ -37,6 +38,10 @@ fn main() {
     if matches.opt_present("h") {
         print_help(options);
     } else if matches.opt_present("q") {
+        if let Err(user_err) = check_user() {
+                println!("{}: {}", NAME, user_err.to_string());
+                process::exit(ExitStatus::Err as i32);
+        }
         match DiagMap::new() {
             Ok(diag_map) => {
                 match diag_map.quick_diag() {

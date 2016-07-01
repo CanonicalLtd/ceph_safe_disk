@@ -12,6 +12,7 @@ pub enum CSDError {
     JsonDecode(error::Error),
     Utf8Error(string::FromUtf8Error),
     CephExecError(String),
+    ExecError,
 }
 
 impl fmt::Display for CSDError {
@@ -21,6 +22,7 @@ impl fmt::Display for CSDError {
             CSDError::JsonDecode(ref err) => write!(f, "JSON decoding error, {}", err),
             CSDError::Utf8Error(ref err) => write!(f, "UTF-8 conversion error, {}", err),
             CSDError::CephExecError(ref err) => write!(f, "Error executing `ceph`, {}", err),
+            CSDError::ExecError => write!(f, "Must be run as root or ceph user"),
         }
     }
 }
