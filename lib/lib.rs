@@ -9,5 +9,6 @@ pub mod from;
 pub mod diag;
 pub mod exit;
 pub mod exec;
+mod pgstate;
 mod des;
 mod error;
