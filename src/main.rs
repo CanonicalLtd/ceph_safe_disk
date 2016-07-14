@@ -26,6 +26,7 @@ fn main() {
 
     options.optflag("h", "help", "Print help information");
     options.optflag("q", "quick", "Give a quick, non-exhaustive status of removable OSDs");
+    options.optflag("e", "exhaustive", "Give a quick, non-exhaustive status of removable OSDs");
 
     let matches = match options.parse(&args[1..]) {
         Ok(m) => m,
@@ -37,17 +38,24 @@ fn main() {
 
     if matches.opt_present("h") {
         print_help(options);
-    } else if matches.opt_present("q") {
+    } else {
         if let Err(user_err) = check_user() {
-                println!("{}: {}", NAME, user_err.to_string());
-                process::exit(ExitStatus::Err as i32);
-        }
+            println!("{}: {}", NAME, user_err.to_string());
+            process::exit(ExitStatus::Err as i32);
+        };
         match DiagMap::new() {
             Ok(diag_map) => {
-                match diag_map.quick_diag() {
-                    Status::Safe => { process::exit(ExitStatus::SafeRm as i32) },
-                    Status::NonSafe => { process::exit(ExitStatus::NonSafeRm as i32) },
-                    _ => { process::exit(ExitStatus::Err as i32) }
+                if matches.opt_present("q") {
+                    match diag_map.quick_diag() {
+                        true => { process::exit(ExitStatus::SafeRm as i32) },
+                        false => { process::exit(ExitStatus::NonSafeRm as i32) },
+                    }
+                } else if matches.opt_present("e") {
+                    match diag_map.exhaustive_diag() {
+                        Status::Safe => { process::exit(ExitStatus::SafeRm as i32) },
+                        Status::NonSafe => { process::exit(ExitStatus::NonSafeRm as i32) },
+                        _ => { process::exit(ExitStatus::Err as i32) }
+                    }
                 }
             },
             Err(err) => {
@@ -55,7 +63,5 @@ fn main() {
                 process::exit(ExitStatus::Err as i32);
             }
         }
-    } else {
-        println!("{0}: No options given, please see {0} -h for help", NAME);
     }
 }
