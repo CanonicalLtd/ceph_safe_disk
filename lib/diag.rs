@@ -167,10 +167,10 @@ mod tests {
     }
 
     #[test]
-    fn exhaustive_diag_jewel_pending_safe() {
+    fn exhaustive_diag_jewel_pending() {
         let status: Status = DiagMap {
-            pg_map: PGMap::from_file("test/jewel/pg_dump_pending_safe.json").unwrap(),
-            osd_map: OsdMap::from_file("test/jewel/osd_dump_pending_safe.json").unwrap(),
+            pg_map: PGMap::from_file("test/jewel/pg_dump_pending.json").unwrap(),
+            osd_map: OsdMap::from_file("test/jewel/osd_dump_pending.json").unwrap(),
         }.exhaustive_diag();
 
         assert_eq!(status, Status::Unknown);
