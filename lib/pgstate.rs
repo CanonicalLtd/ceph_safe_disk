@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 
 // `Pending` PGs are stuck or peering and might still be recoverable, so we
 // cannot say with certainty whether they're safe or not.
-#[derive(PartialOrd, PartialEq, Debug)]
+#[derive(PartialOrd, PartialEq, Debug, Clone, Eq, Ord)]
 pub enum RmSafety {
     None,
     Pending,
@@ -14,7 +14,7 @@ pub enum RmSafety {
 // completely unsafe. The rest are when objects are being moved around and the
 // state cannot be completely determined.
 impl RmSafety {
-    fn new(states: &String) -> RmSafety {
+    pub fn new(states: &String) -> RmSafety {
         let pg_states = PgState::parse_state(states);
         if pg_states.contains(&PgState::Active) &&
             pg_states.contains(&PgState::Clean) {
