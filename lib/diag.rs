@@ -80,7 +80,7 @@ impl DiagMap {
         return false;
     }
 
-    // Maps out PG statuses to  OSDs that those PGs.
+    // Maps out PGs and their states to each OSD in their `acting` list.
     // Returns a more general `Status` based on whether there is a removable
     // OSD or not.
     // `osd_diag` holds an OSD's removability status. Using a binary heap we
@@ -90,16 +90,19 @@ impl DiagMap {
         let mut osd_diag: BTreeMap<i32, BinaryHeap<Status>> = BTreeMap::new();
         let mut general_status = Status::Safe;
 
-        // Populate PG statuses
+        // Populate PG statuses. For each PG we push it's list of acting OSDs
+        // and the state of the PG
         for pg_stat in self.pg_map.pg_stats {
             for acting in pg_stat.acting {
                 pg_info.push((acting, PgInfo::new(&pg_stat.state, pg_stat.pgid.clone())));
             }
         }
 
-        // Generate OSD removability
+        // Generate OSD removability.
         for pg in &pg_info {
-            osd_diag.insert(pg.0, BinaryHeap::new());
+            if let None = osd_diag.get(&pg.0) {
+                osd_diag.insert(pg.0, BinaryHeap::new());
+            }
             match pg.1.rm_safety {
                 RmSafety::None => osd_diag.get_mut(&pg.0).unwrap().push(Status::NonSafe),
                 RmSafety::Pending => osd_diag.get_mut(&pg.0).unwrap().push(Status::Unknown),
