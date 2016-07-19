@@ -26,7 +26,7 @@ fn main() {
 
     options.optflag("h", "help", "Print help information");
     options.optflag("q", "quick", "Give a quick, non-exhaustive status of removable OSDs");
-    options.optflag("e", "exhaustive", "Give a quick, non-exhaustive status of removable OSDs");
+    options.optflag("e", "exhaustive", "Give an exhaustive status of removable OSDs");
 
     let matches = match options.parse(&args[1..]) {
         Ok(m) => m,

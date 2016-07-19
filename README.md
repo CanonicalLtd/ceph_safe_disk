@@ -10,6 +10,21 @@ Builds on stable `rustc` as of 1.8
 `ceph-safe-disk` checks whether OSDs in a ceph cluster are removable or not.
 This is done in two ways, the quick way, and the more exhaustive way.
 
+```
+Usage: ceph-safe-disk [OPTION]
+
+Options:
+    -h, --help          Print help information
+    -q, --quick         Give a quick, non-exhaustive status of removable OSDs
+    -e, --exhaustive    Give an exhaustive status of removable OSDs
+
+Exit statuses:
+    1: Safe to remove an OSD
+    2: Not safe to remove an OSD
+    3: General error
+
+```
+
 **Quick**
 
 The quick option `-q` checks whether the cluster's minimum OSD size is
@@ -24,10 +39,15 @@ the OSD is marked unsafe as well. This is done for each OSD in a placement
 group's acting OSD list.
 
 ### A Note on Timing
-The timing of this tool depends on when ceph report the status of OSDs. More
+The timing of this tool depends on when ceph reports the status of OSDs. More
 information can be found on the [ceph documentation page here](http://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/#osds-report-their-status).
 
-## Safety
+# Safety
+`ceph-safe-disk` marks OSDs in the following states: `Pending`, `Removable`, and
+`Not removable`. `Removable` for an OSD being asbolutely safe to remove, `Not removable` 
+for an OSD that is unsafe to remove, and `Pending` for an OSD that's safety cannot 
+be guarenteed.
+
 The only state for a placement group marked as absolutely safe is `active+clean`.
 Some liberty was taken as to what is regarded as safe, unsafe, and pending.
 
@@ -41,18 +61,3 @@ PG states that currently immediately result in unsafe are:
 - incomplete
 
 Any other state is marked as `Pending`.
-
-```
-Usage: ceph-safe-disk [OPTION]
-
-Options:
-    -h, --help          Print help information
-    -q, --quick         Give a quick, non-exhaustive status of removable OSDs
-    -e, --exhaustive    Give a quick, non-exhaustive status of removable OSDs
-
-Exit statuses:
-    1: Safe to remove an OSD
-    2: Not safe to remove an OSD
-    3: General error
-
-```
