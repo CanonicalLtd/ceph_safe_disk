@@ -11,11 +11,13 @@ Builds on stable `rustc` as of 1.8
 This is done in two ways, the quick way, and the more exhaustive way.
 
 **Quick**
+
 The quick option `-q` checks whether the cluster's minimum OSD size is
 satisfied (that is the current size is `min_size + 1`). This could be unsafe as
 a placement group might not be reproduced.
 
 **Exhaustive**
+
 The more exhaustive option `-e` maps out placement groups to OSDs and then checks
 the safety of each individual OSD. If a placement group is marked unsafe then
 the OSD is marked unsafe as well. This is done for each OSD in a placement
