@@ -100,31 +100,33 @@ impl DiagMap {
 
         // Generate OSD removability.
         for pg in &pg_info {
-            if let None = osd_diag.get(&pg.0) {
+            if let None = osd_diag.get_mut(&pg.0) {
                 osd_diag.insert(pg.0, BinaryHeap::new());
+            } else if let Some(osd_diag) = osd_diag.get_mut(&pg.0) {
+                match pg.1.rm_safety {
+                    RmSafety::None => osd_diag.push(Status::NonSafe),
+                    RmSafety::Pending => osd_diag.push(Status::Unknown),
+                    RmSafety::Total => osd_diag.push(Status::Safe),
+                };
             }
-            match pg.1.rm_safety {
-                RmSafety::None => osd_diag.get_mut(&pg.0).unwrap().push(Status::NonSafe),
-                RmSafety::Pending => osd_diag.get_mut(&pg.0).unwrap().push(Status::Unknown),
-                RmSafety::Total => osd_diag.get_mut(&pg.0).unwrap().push(Status::Safe),
-            };
         }
 
         // Print the statuses of OSDs
         println!("Current OSD statuses:");
         for (osd, status) in osd_diag {
-            let osd_status = status.peek().unwrap();
-            match osd_status {
-                &Status::NonSafe => {
-                    println!("{} {}: {}", Colour::Red.paint("●"), osd, osd_status);
-                    general_status = osd_status.clone();
-                },
-                &Status::Safe => println!("{} {}: {}", Colour::Green.paint("●"), osd, osd_status),
-                &Status::Unknown => {
-                    println!("{} {}: {}", Colour::Yellow.paint("●"), osd, osd_status);
-                    general_status = osd_status.clone();
-                }
-            };
+            if let Some(osd_status) = status.peek() {
+                match osd_status {
+                    &Status::NonSafe => {
+                        println!("{} {}: {}", Colour::Red.paint("●"), osd, osd_status);
+                        general_status = osd_status.clone();
+                    },
+                    &Status::Safe => println!("{} {}: {}", Colour::Green.paint("●"), osd, osd_status),
+                    &Status::Unknown => {
+                        println!("{} {}: {}", Colour::Yellow.paint("●"), osd, osd_status);
+                        general_status = osd_status.clone();
+                    }
+                };
+            }
         }
         return general_status;
     }
