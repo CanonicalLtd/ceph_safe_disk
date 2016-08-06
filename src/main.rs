@@ -15,9 +15,9 @@ use getopts::Options;
 fn print_help(opts: Options) {
     println!("{0}", opts.usage("Usage: ceph-safe-disk [OPTION]"));
     println!("Exit statuses:
-    1: Safe to remove an OSD
-    2: Not safe to remove an OSD
-    3: General error");
+    0: Safe to remove an OSD
+    1: Not safe to remove an OSD
+    2: General error");
 }
 
 fn main() {
