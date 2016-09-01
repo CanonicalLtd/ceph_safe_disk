@@ -8,8 +8,9 @@ build = "build/build.rs"
 serde_codegen = "0.7"
 
 [dependencies]
-getopts = "0.2"
 ansi_term = "0.7"
+getopts = "0.2"
+json = "~0.10"
 serde = "0.7"
 serde_json = "0.7"
 users = "0.5"

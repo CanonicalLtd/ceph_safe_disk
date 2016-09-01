@@ -1,4 +1,5 @@
 extern crate ansi_term;
+extern crate json;
 
 use ansi_term::Colour;
 
@@ -64,14 +65,22 @@ impl DiagMap {
     }
 
     // Quick check to see if `min_size +1` is satisfied
-    pub fn quick_diag(self) -> bool {
+    pub fn quick_diag(self, json_format: bool) -> bool {
         for stat in self.pg_map.pg_stats {
             for pool in self.osd_map.pools.iter() {
                 if (stat.up.clone().len() as i32) >= (pool.min_size + 1) {
-                    println!("{} Safe to remove an OSD", Colour::Green.paint("●"));
+                    if json_format {
+                        println!("{{\"Safe to remove an OSD\": true}}");
+                    } else {
+                        println!("{} Safe to remove an OSD", Colour::Green.paint("●"));
+                    }
                     return true;
                 } else {
-                    println!("{} Not safe to remove an OSD", Colour::Red.paint("●"));
+                    if json_format {
+                        println!("{{\"Safe to remove an OSD\": false}}");
+                    } else {
+                        println!("{} Not safe to remove an OSD", Colour::Red.paint("●"));
+                    }
                     return false;
                 }
             }
@@ -84,7 +93,7 @@ impl DiagMap {
     // OSD or not.
     // `osd_diag` holds an OSD's removability status. Using a binary heap we
     // can always know which state it has that holds the highest precedent.
-    pub fn exhaustive_diag(self) -> Status {
+    pub fn exhaustive_diag(self, json_format: bool) -> Status {
         let mut pg_info: Vec<(i32, PgInfo)> = Vec::new();
         let mut osd_diag: BTreeMap<i32, BinaryHeap<Status>> = BTreeMap::new();
         let mut general_status = Status::Safe;
@@ -109,24 +118,53 @@ impl DiagMap {
                 };
             }
         }
+        if json_format {
+            let mut output = json::JsonValue::new_object();
+            // Put OSD id's into a list based on their safety status
+            output[format!("{}", Status::NonSafe)] = json::JsonValue::new_array();
+            output[format!("{}", Status::Safe)] = json::JsonValue::new_array();
+            output[format!("{}", Status::Unknown)] = json::JsonValue::new_array();
 
-        // Print the statuses of OSDs
-        println!("Current OSD statuses:");
-        for (osd, status) in osd_diag {
-            if let Some(osd_status) = status.peek() {
-                match osd_status {
-                    &Status::NonSafe => {
-                        println!("{} {}: {}", Colour::Red.paint("●"), osd, osd_status);
-                        general_status = osd_status.clone();
-                    }
-                    &Status::Safe => {
-                        println!("{} {}: {}", Colour::Green.paint("●"), osd, osd_status)
-                    }
-                    &Status::Unknown => {
-                        println!("{} {}: {}", Colour::Yellow.paint("●"), osd, osd_status);
-                        general_status = osd_status.clone();
-                    }
-                };
+            for (osd, status) in osd_diag {
+                if let Some(osd_status) = status.peek() {
+                    match osd_status {
+                        &Status::NonSafe => {
+                            // output[format!("{}", osd)] = format!("{:?}", osd_status).into();
+                            output[format!("{}", Status::NonSafe)].push(osd);
+                            general_status = osd_status.clone();
+                        }
+                        &Status::Safe => {
+                            // output[format!("{}", osd)] = format!("{:?}", osd_status).into();
+                            output[format!("{}", Status::Safe)].push(osd);
+                        }
+                        &Status::Unknown => {
+                            // output[format!("{}", osd)] = format!("{:?}", osd_status).into();
+                            output[format!("{}", Status::Unknown)].push(osd);
+                            general_status = osd_status.clone();
+                        }
+                    };
+                }
+            }
+            println!("{}", output.dump());
+        } else {
+            // Print the statuses of OSDs
+            println!("Current OSD statuses:");
+            for (osd, status) in osd_diag {
+                if let Some(osd_status) = status.peek() {
+                    match osd_status {
+                        &Status::NonSafe => {
+                            println!("{} {}: {}", Colour::Red.paint("●"), osd, osd_status);
+                            general_status = osd_status.clone();
+                        }
+                        &Status::Safe => {
+                            println!("{} {}: {}", Colour::Green.paint("●"), osd, osd_status)
+                        }
+                        &Status::Unknown => {
+                            println!("{} {}: {}", Colour::Yellow.paint("●"), osd, osd_status);
+                            general_status = osd_status.clone();
+                        }
+                    };
+                }
             }
         }
         return general_status;
@@ -147,7 +185,7 @@ mod tests {
                 pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
                 osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
             }
-            .quick_diag();
+            .quick_diag(false);
 
         assert_eq!(status, true);
     }
@@ -158,7 +196,7 @@ mod tests {
                 pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
                 osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
             }
-            .exhaustive_diag();
+            .exhaustive_diag(false);
 
         assert_eq!(status, Status::Safe);
     }
@@ -169,7 +207,7 @@ mod tests {
                 pg_map: PGMap::from_file("test/jewel/pg_dump_non_safe.json").unwrap(),
                 osd_map: OsdMap::from_file("test/jewel/osd_dump_non_safe.json").unwrap(),
             }
-            .exhaustive_diag();
+            .exhaustive_diag(false);
 
         assert_eq!(status, Status::NonSafe);
     }
@@ -180,7 +218,7 @@ mod tests {
                 pg_map: PGMap::from_file("test/jewel/pg_dump_pending.json").unwrap(),
                 osd_map: OsdMap::from_file("test/jewel/osd_dump_pending.json").unwrap(),
             }
-            .exhaustive_diag();
+            .exhaustive_diag(false);
 
         assert_eq!(status, Status::Unknown);
     }
@@ -191,7 +229,7 @@ mod tests {
                 pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
                 osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
             }
-            .quick_diag();
+            .quick_diag(false);
 
         assert_eq!(status, true);
     }
@@ -202,7 +240,7 @@ mod tests {
                 pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
                 osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
             }
-            .exhaustive_diag();
+            .exhaustive_diag(false);
 
         assert_eq!(status, Status::Safe);
     }

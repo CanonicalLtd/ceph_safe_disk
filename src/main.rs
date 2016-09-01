@@ -23,8 +23,10 @@ fn print_help(opts: Options) {
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut options = Options::new();
+    let mut json_format: bool = false;
 
     options.optflag("h", "help", "Print help information");
+    options.optflag("j", "json", "Output in json format");
     options.optflag("q",
                     "quick",
                     "Give a quick, non-exhaustive status of removable OSDs");
@@ -39,7 +41,9 @@ fn main() {
             process::exit(ExitStatus::Err as i32);
         }
     };
-
+    if matches.opt_present("j") {
+        json_format = true
+    }
     if matches.opt_present("h") {
         print_help(options);
     } else {
@@ -50,12 +54,12 @@ fn main() {
         match DiagMap::new() {
             Ok(diag_map) => {
                 if matches.opt_present("q") {
-                    match diag_map.quick_diag() {
+                    match diag_map.quick_diag(json_format) {
                         true => process::exit(ExitStatus::SafeRm as i32),
                         false => process::exit(ExitStatus::NonSafeRm as i32),
                     }
                 } else if matches.opt_present("e") {
-                    match diag_map.exhaustive_diag() {
+                    match diag_map.exhaustive_diag(json_format) {
                         Status::Safe => process::exit(ExitStatus::SafeRm as i32),
                         Status::NonSafe => process::exit(ExitStatus::NonSafeRm as i32),
                         _ => process::exit(ExitStatus::Err as i32),
