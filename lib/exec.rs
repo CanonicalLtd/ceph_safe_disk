@@ -7,10 +7,10 @@ use std::process::Command;
 
 pub fn call_ceph(cmd: &str) -> Result<String, CSDError> {
     let ceph = try!(Command::new("/usr/bin/env")
-                        .arg("sh")
-                        .arg("-c")
-                        .arg(format!("ceph {} -f json", cmd))
-                        .output());
+        .arg("sh")
+        .arg("-c")
+        .arg(format!("ceph {} -f json", cmd))
+        .output());
     if ceph.status.success() {
         Ok(String::from_utf8_lossy(&ceph.stdout).into_owned())
     } else {
@@ -23,16 +23,12 @@ pub fn check_user() -> Result<(), CSDError> {
     match get_current_username() {
         Some(user) => {
             match user.as_ref() {
-                "ceph" => {
-                    Ok(())
-                }
-                "root" => {
-                    Ok(())
-                }
-                _ => { Err(CSDError::ExecError) }
+                "ceph" => Ok(()),
+                "root" => Ok(()),
+                _ => Err(CSDError::ExecError),
             }
         }
-        None => { Err(CSDError::ExecError) }
+        None => Err(CSDError::ExecError),
     }
 }
 

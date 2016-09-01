@@ -15,7 +15,7 @@ pub trait FromFile<T> {
     fn from_file(path: &str) -> Result<T, CSDError>;
 }
 
-impl <T: Deserialize + Debug> FromFile<T> for T {
+impl<T: Deserialize + Debug> FromFile<T> for T {
     fn from_file(path: &str) -> Result<T, CSDError> {
         let mut file = try!(File::open(path));
         let mut buffer = String::new();
@@ -31,7 +31,7 @@ pub trait FromCeph<T> {
     fn from_ceph(cmd: &str) -> Result<T, CSDError>;
 }
 
-impl <T: Deserialize + Debug> FromCeph<T> for T {
+impl<T: Deserialize + Debug> FromCeph<T> for T {
     fn from_ceph(cmd: &str) -> Result<T, CSDError> {
         Ok(try!(serde_json::from_str(&try!(call_ceph(cmd)))))
     }

@@ -18,7 +18,7 @@ pub enum CSDError {
 impl fmt::Display for CSDError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            CSDError::Io(ref err) => write!(f , "I/O error, {}", err),
+            CSDError::Io(ref err) => write!(f, "I/O error, {}", err),
             CSDError::JsonDecode(ref err) => write!(f, "JSON decoding error, {}", err),
             CSDError::Utf8Error(ref err) => write!(f, "UTF-8 conversion error, {}", err),
             CSDError::CephExecError(ref err) => write!(f, "Error executing `ceph`, {}", err),

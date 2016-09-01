@@ -67,14 +67,13 @@ impl DiagMap {
     pub fn quick_diag(self) -> bool {
         for stat in self.pg_map.pg_stats {
             for pool in self.osd_map.pools.iter() {
-                if (stat.up.clone().len() as i32) >=
-                    (pool.min_size + 1) {
-                        println!("{} Safe to remove an OSD", Colour::Green.paint("●"));
-                        return true;
-                    } else {
-                        println!("{} Not safe to remove an OSD", Colour::Red.paint("●"));
-                        return false;
-                    }
+                if (stat.up.clone().len() as i32) >= (pool.min_size + 1) {
+                    println!("{} Safe to remove an OSD", Colour::Green.paint("●"));
+                    return true;
+                } else {
+                    println!("{} Not safe to remove an OSD", Colour::Red.paint("●"));
+                    return false;
+                }
             }
         }
         return false;
@@ -119,8 +118,10 @@ impl DiagMap {
                     &Status::NonSafe => {
                         println!("{} {}: {}", Colour::Red.paint("●"), osd, osd_status);
                         general_status = osd_status.clone();
-                    },
-                    &Status::Safe => println!("{} {}: {}", Colour::Green.paint("●"), osd, osd_status),
+                    }
+                    &Status::Safe => {
+                        println!("{} {}: {}", Colour::Green.paint("●"), osd, osd_status)
+                    }
                     &Status::Unknown => {
                         println!("{} {}: {}", Colour::Yellow.paint("●"), osd, osd_status);
                         general_status = osd_status.clone();
@@ -130,7 +131,6 @@ impl DiagMap {
         }
         return general_status;
     }
-
 }
 
 
@@ -144,9 +144,10 @@ mod tests {
     #[test]
     fn quick_diag_jewel_safe() {
         let status = DiagMap {
-            pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
-            osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
-        }.quick_diag();
+                pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
+                osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
+            }
+            .quick_diag();
 
         assert_eq!(status, true);
     }
@@ -154,9 +155,10 @@ mod tests {
     #[test]
     fn exhaustive_diag_jewel_safe() {
         let status: Status = DiagMap {
-            pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
-            osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
-        }.exhaustive_diag();
+                pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
+                osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
+            }
+            .exhaustive_diag();
 
         assert_eq!(status, Status::Safe);
     }
@@ -164,9 +166,10 @@ mod tests {
     #[test]
     fn exhaustive_diag_jewel_non_safe() {
         let status: Status = DiagMap {
-            pg_map: PGMap::from_file("test/jewel/pg_dump_non_safe.json").unwrap(),
-            osd_map: OsdMap::from_file("test/jewel/osd_dump_non_safe.json").unwrap(),
-        }.exhaustive_diag();
+                pg_map: PGMap::from_file("test/jewel/pg_dump_non_safe.json").unwrap(),
+                osd_map: OsdMap::from_file("test/jewel/osd_dump_non_safe.json").unwrap(),
+            }
+            .exhaustive_diag();
 
         assert_eq!(status, Status::NonSafe);
     }
@@ -174,9 +177,10 @@ mod tests {
     #[test]
     fn exhaustive_diag_jewel_pending() {
         let status: Status = DiagMap {
-            pg_map: PGMap::from_file("test/jewel/pg_dump_pending.json").unwrap(),
-            osd_map: OsdMap::from_file("test/jewel/osd_dump_pending.json").unwrap(),
-        }.exhaustive_diag();
+                pg_map: PGMap::from_file("test/jewel/pg_dump_pending.json").unwrap(),
+                osd_map: OsdMap::from_file("test/jewel/osd_dump_pending.json").unwrap(),
+            }
+            .exhaustive_diag();
 
         assert_eq!(status, Status::Unknown);
     }
@@ -184,9 +188,10 @@ mod tests {
     #[test]
     fn quick_diag_firefly_safe() {
         let status = DiagMap {
-            pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
-            osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
-        }.quick_diag();
+                pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
+                osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
+            }
+            .quick_diag();
 
         assert_eq!(status, true);
     }
@@ -194,9 +199,10 @@ mod tests {
     #[test]
     fn exhaustive_diag_firefly_safe() {
         let status: Status = DiagMap {
-            pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
-            osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
-        }.exhaustive_diag();
+                pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
+                osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
+            }
+            .exhaustive_diag();
 
         assert_eq!(status, Status::Safe);
     }

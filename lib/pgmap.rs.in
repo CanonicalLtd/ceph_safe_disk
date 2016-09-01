@@ -195,7 +195,8 @@ mod tests {
     fn pgmap_from_jewel_file_no_osd_panic() {
         let pgmap = PGMap::from_file("test/jewel/pg_dump_no_osd.json").unwrap();
         // First pg_stat.state should be "creating" since there are no OSDs
-        assert_eq!(pgmap.pg_stats.first().unwrap().state, "active+clean".to_owned());
+        assert_eq!(pgmap.pg_stats.first().unwrap().state,
+                   "active+clean".to_owned());
     }
 
     #[test]

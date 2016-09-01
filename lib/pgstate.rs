@@ -16,15 +16,14 @@ pub enum RmSafety {
 impl RmSafety {
     pub fn new(states: &String) -> RmSafety {
         let pg_states = PgState::parse_state(states);
-        if pg_states.contains(&PgState::Active) &&
-            pg_states.contains(&PgState::Clean) {
+        if pg_states.contains(&PgState::Active) && pg_states.contains(&PgState::Clean) {
             return RmSafety::Total;
         } else if pg_states.contains(&PgState::Backfill) ||
-            pg_states.contains(&PgState::BackfillToofull) ||
-                pg_states.contains(&PgState::WaitBackfill) ||
-                pg_states.contains(&PgState::Down) ||
-                pg_states.contains(&PgState::Undersized) ||
-                pg_states.contains(&PgState::Incomplete) {
+           pg_states.contains(&PgState::BackfillToofull) ||
+           pg_states.contains(&PgState::WaitBackfill) ||
+           pg_states.contains(&PgState::Down) ||
+           pg_states.contains(&PgState::Undersized) ||
+           pg_states.contains(&PgState::Incomplete) {
             return RmSafety::None;
         } else {
             return RmSafety::Pending;
@@ -62,27 +61,27 @@ impl FromStr for PgState {
 
     fn from_str(state: &str) -> Result<Self, Self::Err> {
         match state {
-               "creating" => Ok(PgState::Creating),
-               "active" => Ok(PgState::Active),
-               "clean" => Ok(PgState::Clean),
-               "down" => Ok(PgState::Down),
-               "replay" => Ok(PgState::Replay),
-               "splitting" => Ok(PgState::Splitting),
-               "scrubbing" => Ok(PgState::Scrubbing),
-               "degraded" => Ok(PgState::Degraded),
-               "inconsistent" => Ok(PgState::Inconsistent),
-               "peering" => Ok(PgState::Peering),
-               "repair" => Ok(PgState::Repair),
-               "recovering" => Ok(PgState::Recovering),
-               "backfill" => Ok(PgState::Backfill),
-               "wait-backfill" => Ok(PgState::WaitBackfill),
-               "backfill-toofull" => Ok(PgState::BackfillToofull),
-               "incomplete" => Ok(PgState::Incomplete),
-               "stale" => Ok(PgState::Stale),
-               "remapped" => Ok(PgState::Remapped),
-               "undersized" => Ok(PgState::Undersized),
-               "peered" => Ok(PgState::Peered),
-               _ => Err(()),
+            "creating" => Ok(PgState::Creating),
+            "active" => Ok(PgState::Active),
+            "clean" => Ok(PgState::Clean),
+            "down" => Ok(PgState::Down),
+            "replay" => Ok(PgState::Replay),
+            "splitting" => Ok(PgState::Splitting),
+            "scrubbing" => Ok(PgState::Scrubbing),
+            "degraded" => Ok(PgState::Degraded),
+            "inconsistent" => Ok(PgState::Inconsistent),
+            "peering" => Ok(PgState::Peering),
+            "repair" => Ok(PgState::Repair),
+            "recovering" => Ok(PgState::Recovering),
+            "backfill" => Ok(PgState::Backfill),
+            "wait-backfill" => Ok(PgState::WaitBackfill),
+            "backfill-toofull" => Ok(PgState::BackfillToofull),
+            "incomplete" => Ok(PgState::Incomplete),
+            "stale" => Ok(PgState::Stale),
+            "remapped" => Ok(PgState::Remapped),
+            "undersized" => Ok(PgState::Undersized),
+            "peered" => Ok(PgState::Peered),
+            _ => Err(()),
         }
     }
 }

@@ -133,7 +133,9 @@ mod tests {
         let mut osds_up: Vec<i32> = Vec::new();
         // There should be no OSDs present
         for osd in osdmap.osds {
-            if osd.up == 1 { osds_up.push(1); }
+            if osd.up == 1 {
+                osds_up.push(1);
+            }
         }
         assert_eq!(osds_up.len(), 0);
     }
@@ -144,7 +146,9 @@ mod tests {
         let mut osds_up: Vec<i32> = Vec::new();
         // Since this is non-safe there should be min_size or less OSDs present
         for osd in osdmap.osds {
-            if osd.up == 1 { osds_up.push(1); }
+            if osd.up == 1 {
+                osds_up.push(1);
+            }
         }
         assert_eq!(osds_up.len() as i32, osdmap.pools.first().unwrap().min_size);
     }
