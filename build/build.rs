@@ -12,6 +12,10 @@ pub fn main() {
     let osdmap_src = Path::new("lib/osdmap.rs.in");
     let osdmap_dst = Path::new(&out_dir).join("osdmap.rs");
 
+    let diag_src = Path::new("lib/diag.rs.in");
+    let diag_dest = Path::new(&out_dir).join("diag.rs");
+
     serde_codegen::expand(&pgmap_src, &pgmap_dst).unwrap();
     serde_codegen::expand(&osdmap_src, &osdmap_dst).unwrap();
+    serde_codegen::expand(&diag_src, &diag_dest).unwrap();
 }
