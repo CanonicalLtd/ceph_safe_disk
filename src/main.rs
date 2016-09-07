@@ -27,6 +27,7 @@ fn main() {
     options.optflag("h", "help", "Print help information");
     options.optflag("q", "quick", "Give a quick, non-exhaustive status of removable OSDs");
     options.optflag("e", "exhaustive", "Give an exhaustive status of removable OSDs");
+    options.optopt("f", "format", "Format output where the options are: pretty, json", "FORMAT");
 
     let matches = match options.parse(&args[1..]) {
         Ok(m) => m,
@@ -43,15 +44,24 @@ fn main() {
             println!("{}: {}", NAME, user_err.to_string());
             process::exit(ExitStatus::Err as i32);
         };
+        let mut format = Format::Pretty;
+        if matches.opt_present("f") {
+            if let Some(format_arg) = matches.opt_str("f") {
+                match format_arg.as_ref() {
+                    "json" => format = Format::Json,
+                    _ => (),
+                };
+            }
+        }
         match DiagMap::new() {
             Ok(diag_map) => {
                 if matches.opt_present("q") {
-                    match diag_map.quick_diag() {
+                    match diag_map.quick_diag(format) {
                         true => { process::exit(ExitStatus::SafeRm as i32) },
                         false => { process::exit(ExitStatus::NonSafeRm as i32) },
                     }
                 } else if matches.opt_present("e") {
-                    match diag_map.exhaustive_diag() {
+                    match diag_map.exhaustive_diag(format) {
                         Status::Safe => { process::exit(ExitStatus::SafeRm as i32) },
                         Status::NonSafe => { process::exit(ExitStatus::NonSafeRm as i32) },
                         _ => { process::exit(ExitStatus::Err as i32) }
