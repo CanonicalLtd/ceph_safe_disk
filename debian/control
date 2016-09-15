@@ -1,0 +1,13 @@
+Source: ceph-safe-disk
+Section: contrib/admin
+Priority: optional
+Maintainer: Chris Holcombe <xfactor973@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: https://github.com/CanonicalLtd/ceph_safe_disk
+
+Package: ceph-safe-disk
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Program to check Ceph disks
+	ceph-safe-disk checks whether OSDs in a ceph cluster are removable or not.

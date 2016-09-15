@@ -1,0 +1,11 @@
+ceph-safe-disk (1.0.0ubuntu2) xenial; urgency=medium
+
+  * Add support for formatted output
+
+ -- Chris Holcombe <xfactor973@gmail.com>  Wed, 07 Sep 2016 15:12:14 -0800
+
+ceph-safe-disk (1.0.0ubuntu1) xenial; urgency=medium
+
+  * Initial Release.
+
+ -- Chris Holcombe <xfactor973@gmail.com>  Wed, 31 Aug 2016 16:15:00 -0800
