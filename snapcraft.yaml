@@ -1,0 +1,15 @@
+name: ceph-safe-disk
+version: '0.1'
+summary: Ceph disk safety removal tool
+description: |
+  ceph-safe-disk checks whether OSDs in a ceph cluster are removable or not. 
+grade: stable
+confinement: classic
+
+parts:
+  ceph-safe-disk:
+    plugin: rust
+    source: .
+apps:
+  ceph-safe-disk:
+    command: ceph-safe-disk
