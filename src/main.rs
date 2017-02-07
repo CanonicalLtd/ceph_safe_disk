@@ -20,7 +20,7 @@ fn print_help(opts: Options) {
     2: General error");
 }
 
-fn main() {
+fn run() -> i32 {
     let args: Vec<String> = env::args().collect();
     let mut options = Options::new();
 
@@ -49,7 +49,7 @@ fn main() {
     } else {
         if let Err(user_err) = check_user() {
             println!("{}: {}", NAME, user_err.to_string());
-            process::exit(ExitStatus::Err as i32);
+            return ExitStatus::Err as i32;
         };
         let mut format = Format::Pretty;
         if matches.opt_present("f") {
@@ -64,21 +64,29 @@ fn main() {
             Ok(diag_map) => {
                 if matches.opt_present("q") {
                     match diag_map.quick_diag(format) {
-                        true => process::exit(ExitStatus::SafeRm as i32),
-                        false => process::exit(ExitStatus::NonSafeRm as i32),
+                        true => return ExitStatus::SafeRm as i32,
+                        false => return ExitStatus::NonSafeRm as i32,
                     }
                 } else if matches.opt_present("e") {
                     match diag_map.exhaustive_diag(format) {
-                        Status::Safe => process::exit(ExitStatus::SafeRm as i32),
-                        Status::NonSafe => process::exit(ExitStatus::NonSafeRm as i32),
-                        _ => process::exit(ExitStatus::Err as i32),
+                        Status::Safe => return ExitStatus::SafeRm as i32,
+                        Status::NonSafe => return ExitStatus::NonSafeRm as i32,
+                        _ => return ExitStatus::Err as i32,
                     }
                 }
             }
             Err(err) => {
                 print!("{}: {}", NAME, err.to_string());
-                process::exit(ExitStatus::Err as i32);
+                return ExitStatus::Err as i32;
             }
         }
     }
+    return ExitStatus::Err as i32;
+}
+
+fn main() {
+    match run() {
+        error @ 0...2 => process::exit(error),
+        _ => process::exit(ExitStatus::Err as i32),
+    };
 }
