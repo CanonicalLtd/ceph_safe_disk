@@ -4,7 +4,7 @@ summary: Ceph disk safety removal tool
 description: |
   ceph-safe-disk checks whether OSDs in a ceph cluster are removable or not. 
 grade: stable
-confinement: classic
+confinement: devmode
 
 parts:
   ceph-safe-disk:
