@@ -1,6 +1,7 @@
-extern crate serde;
-extern crate serde_json;
 extern crate ansi_term;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde_json;
 extern crate users;
 
 pub mod pgmap;
