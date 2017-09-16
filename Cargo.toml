@@ -1,7 +1,18 @@
 [package]
 name = "ceph-safe-disk"
 version = "0.1.0"
-authors = ["Alberto Corona <ac@albertocorona.com>"]
+repository = "https://github.com/CanonicalLtd/ceph_safe_disk"
+description = "Ceph disk safety removal tool"
+authors = [
+	"Alberto Corona <ac@albertocorona.com>",
+	"Chris Holcombe <xfactor973@gmail.com>"
+]
+license = "MIT"
+exclude = [
+	"test/*",
+	"debian/*",
+]
+keywords = ["ceph"]
 
 [dependencies]
 getopts = "0.2"
